@@ -1,0 +1,48 @@
+﻿<Page x:Class="ClientWPF.Views.Authorization.AuthorizationView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:local="clr-namespace:ClientWPF.Views.Authorization"
+	  xmlns:authorization="clr-namespace:ClientWPF.ViewModels.Authorization"
+	  d:DataContext="{d:DesignInstance Type=authorization:AuthorizationViewModel}"
+	  mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="1600">
+
+	<Grid>
+		<Grid.Background>
+			<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+				<GradientStop Color="#8860D0" Offset="0.0"/>
+				<GradientStop Color="#84CEEB" Offset="0.4"/>
+				<GradientStop Color="#84CEEB" Offset="0.6"/>
+				<GradientStop Color="#8860D0" Offset="1.0"/>
+			</LinearGradientBrush>
+		</Grid.Background>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="500"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="100"/>
+			<RowDefinition/>
+			<RowDefinition Height="100"/>
+		</Grid.RowDefinitions>
+
+		<StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<!--<Image Source="/UIKit/Resources/Logo.png" Width="80" Height="80"></Image>-->
+			<TextBlock Style="{StaticResource textBlockBaseStyle}" FontSize="40">QumartSeller</TextBlock>
+		</StackPanel>
+		<StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<TextBlock Style="{StaticResource textBlockBaseStyle}">Имя пользователя</TextBlock>
+			<TextBox Style="{DynamicResource textBoxBaseStyle}" Width="250" Margin="0,0,0,25" Text="{Binding Username}" IsEnabled="{Binding IsInputEnabled}"/>
+
+			<TextBlock Style="{StaticResource textBlockBaseStyle}">Пароль</TextBlock>
+			<PasswordBox Style="{DynamicResource passwordBoxBaseStyle}" Width="250" Margin="0,0,0,70" InputScope="Password" PasswordChanged="PasswordBox_PasswordChanged" IsEnabled="{Binding IsInputEnabled}"/>
+
+			<TextBlock Style="{StaticResource textBlockErrorStyle}" FontSize="16" Margin="0,0,0,5" Text="{Binding ErrorMessage}"/>
+
+			<Button Style="{DynamicResource buttonRoundedStyle}" BorderThickness="0" Width="250" Height="50" Command="{Binding TryToAuthorizeCommand}" IsEnabled="{Binding IsInputEnabled}">Войти</Button>
+		</StackPanel>
+	</Grid>
+</Page>

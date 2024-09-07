@@ -1,0 +1,1 @@
+Client WPF application for interacting with the server by SignalR client.

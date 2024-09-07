@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="UIKit\Resources\CardsIcon.png" />
+    <None Remove="UIKit\Resources\EmptyPhotoIcon.png" />
+    <None Remove="UIKit\Resources\FilterIcon.png" />
+    <None Remove="UIKit\Resources\FindIcon.png" />
+    <None Remove="UIKit\Resources\HomePageIcon.png" />
+    <None Remove="UIKit\Resources\OzonLogo.png" />
+    <None Remove="UIKit\Resources\RedCrossDefault.png" />
+    <None Remove="UIKit\Resources\RedCrossOver.png" />
+    <None Remove="UIKit\Resources\SettingsIcon.png" />
+    <None Remove="UIKit\Resources\WhiteCheckIcon.png" />
+    <None Remove="UIKit\Resources\WhiteCrossIcon.png" />
+    <None Remove="UIKit\Resources\WildberriesLogo.png" />
+    <None Remove="UIKit\Resources\YandexMarketLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.8" />
+    <PackageReference Include="QumartSeller_ClientServerConnection" Version="0.1.1-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="UIKit\Resources\CardsIcon.png" />
+    <Resource Include="UIKit\Resources\FilterIcon.png" />
+    <Resource Include="UIKit\Resources\FindIcon.png" />
+    <Resource Include="UIKit\Resources\HomePageIcon.png" />
+    <Resource Include="UIKit\Resources\OzonLogo.png" />
+    <Resource Include="UIKit\Resources\RedCrossDefault.png" />
+    <Resource Include="UIKit\Resources\RedCrossOver.png" />
+    <Resource Include="UIKit\Resources\SettingsIcon.png" />
+    <Resource Include="UIKit\Resources\EmptyPhotoIcon.png" />
+    <Resource Include="UIKit\Resources\WhiteCheckIcon.png" />
+    <Resource Include="UIKit\Resources\WhiteCrossIcon.png" />
+    <Resource Include="UIKit\Resources\WildberriesLogo.png" />
+    <Resource Include="UIKit\Resources\YandexMarketLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

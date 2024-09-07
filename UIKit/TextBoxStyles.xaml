@@ -1,0 +1,92 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Style x:Key="textBoxBaseStyle" TargetType="TextBox">
+		<Style.Setters>
+			<Setter Property="FontFamily" Value="{DynamicResource fontBaseFamily}"/>
+			<Setter Property="FontSize" Value="{DynamicResource fontBaseSize}"/>
+			<Setter Property="Foreground" Value="{DynamicResource colorText}"/>
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="2"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource colorText}"/>
+			<Setter Property="CaretBrush" Value="{DynamicResource colorText}"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+			<Setter Property="TextBox.Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TextBox}">
+						<Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+							<ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Margin="4,2"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsEnabled" Value="false">
+								<Setter Property="Opacity" TargetName="border" Value="0.56"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style.Setters>
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Foreground" Value="{StaticResource colorGrey}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<Style x:Key="passwordBoxBaseStyle" TargetType="PasswordBox">
+		<Style.Setters>
+			<Setter Property="PasswordChar" Value="●"/>
+			<Setter Property="FontFamily" Value="{DynamicResource fontBaseFamily}"/>
+			<Setter Property="FontSize" Value="{DynamicResource fontBaseSize}"/>
+			<Setter Property="Foreground" Value="{DynamicResource colorText}"/>
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="2"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource colorText}"/>
+			<Setter Property="CaretBrush" Value="{DynamicResource colorText}"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+			<Setter Property="PasswordBox.Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type PasswordBox}">
+						<Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+							<ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Margin="4,2"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsEnabled" Value="false">
+								<Setter Property="Opacity" TargetName="border" Value="0.56"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style.Setters>
+	</Style>
+
+	<Style x:Key="textBoxNumberStyle" TargetType="TextBox" BasedOn="{StaticResource textBoxBaseStyle}">
+		<Style.Setters>
+			<Setter Property="InputScope" Value="Number"/>
+			<Setter Property="MaxLength" Value="4"/>
+			<Setter Property="Background" Value="{StaticResource colorBlue}"/>
+			<Setter Property="TextBox.Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TextBox}">
+						<Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+							<ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Margin="4,2" HorizontalAlignment="Center"/>
+						</Border>
+
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="true">
+								<Setter Property="Background" TargetName="border" Value="{StaticResource colorPurple}"/>
+							</Trigger>
+							<Trigger Property="IsKeyboardFocused" Value="true">
+								<Setter Property="Background" TargetName="border" Value="{StaticResource colorPurple}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style.Setters>
+	</Style>
+	
+</ResourceDictionary>
