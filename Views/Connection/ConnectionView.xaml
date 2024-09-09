@@ -50,7 +50,7 @@
 				<RowDefinition/>
 			</Grid.RowDefinitions>
 
-			<TextBlock Style="{StaticResource textBlockBaseStyle}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Text="{Binding ErrorText}" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis"></TextBlock>
+			<TextBlock Style="{StaticResource textBlockBaseStyle}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Text="{Binding ErrorText}" TextWrapping="WrapWithOverflow" TextTrimming="WordEllipsis" TextAlignment="Center"></TextBlock>
 			<Button Style="{DynamicResource buttonRoundedStyle}" BorderThickness="0" Grid.Column="0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="50" Width="250" Command="{Binding ReconnectCommand}">Переподключиться</Button>
 			<Button Style="{DynamicResource buttonRoundedStyle}" BorderThickness="0" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="50" Width="250" Command="{Binding ReturnCommand}">Вернуться к авторизации</Button>
 		</Grid>
