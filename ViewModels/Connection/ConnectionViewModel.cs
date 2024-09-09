@@ -9,15 +9,12 @@
 using ClientWPF.Services;
 using ClientWPF.ViewModels.Authorization;
 using ClientWPF.ViewModels.Global;
-using ClientWPF.Views.Authorization;
-using ClientWPF.Views.Global;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
 
 namespace ClientWPF.ViewModels.Connection
 {
-    internal partial class ConnectionViewModel : ObservableObject
+    internal partial class ConnectionViewModel : ObservableObject, INavigationVM
     {
         private readonly UserDataService _userDataService = new();
         private readonly AuthorizationService _authorizationService = new();
@@ -26,7 +23,10 @@ namespace ClientWPF.ViewModels.Connection
         public ConnectionViewModel()
         {
             _connectionService.ConnectionLostEvent += OnConnectionLostEvent;
+        }
 
+        public void OnNavigated()
+        {
             Reconnect();
         }
 

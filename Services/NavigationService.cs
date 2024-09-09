@@ -3,6 +3,11 @@ using System.Windows.Controls;
 
 namespace ClientWPF.Services
 {
+    internal interface INavigationVM
+    {
+        public void OnNavigated();
+    }
+
     internal class NavigationService
     {
         private static Dictionary<ObservableObject, Page> CreatedLocators { get; set; } = new();
@@ -45,6 +50,11 @@ namespace ClientWPF.Services
             {
                 // Navigate
                 targetFrame.Navigate(findLocator.First().Value);
+
+                // If VM has interface call it method
+                var vm = findLocator.First().Key;
+                if (vm is INavigationVM)
+                    ((INavigationVM)vm).OnNavigated();
             }
             // Try find registered locator
             else
@@ -72,6 +82,10 @@ namespace ClientWPF.Services
 
                             // Navigate
                             targetFrame.Navigate(newPage);
+
+                            // If VM has interface call it method
+                            if (newViewModel is INavigationVM)
+                                ((INavigationVM)newViewModel).OnNavigated();
                         }
                     }
                 }
