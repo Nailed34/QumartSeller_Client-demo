@@ -27,7 +27,7 @@ namespace ClientWPF.Views.Global.Products
             DetailCreationDateProperty = DependencyProperty.Register("DetailCreationDate", typeof(DateTime), typeof(ProductCardDetails));
             DetailIsSynchProperty = DependencyProperty.Register("DetailIsSynch", typeof(bool), typeof(ProductCardDetails));
             DetailMultiplicityProperty = DependencyProperty.Register("DetailMultiplicity", typeof(int), typeof(ProductCardDetails));
-            DetailMarketplaceProperty = DependencyProperty.Register("DetailMarketplace", typeof(EMarketplaces), typeof(ProductCardDetails));
+            DetailMarketplaceProperty = DependencyProperty.Register("DetailMarketplace", typeof(EMarketplaces), typeof(ProductCardDetails), new PropertyMetadata(OnDetailMarketplacePropertyChanged));
             DetailBarcodesProperty = DependencyProperty.Register("DetailBarcodes", typeof(ObservableCollection<string>), typeof(ProductCardDetails), new PropertyMetadata(OnDetailBarcodesPropertyChanged));
             DetailIsDisplayProperty = DependencyProperty.Register("DetailIsDisplay", typeof(bool), typeof(ProductCardDetails));
         }
@@ -44,9 +44,32 @@ namespace ClientWPF.Views.Global.Products
             newValue.CollectionChanged += currentCard.OnDetailBarcodesChanged;
         }
 
+        private static void OnDetailMarketplacePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var currentCard = (ProductCardDetails)d;
+            var newValue = (EMarketplaces)e.NewValue;
+            currentCard.OnDetailMarketplaceChanged(newValue);
+        }
+
         private void OnDetailBarcodesChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             
+        }
+
+        private void OnDetailMarketplaceChanged(EMarketplaces newValue)
+        {
+            switch (newValue)
+            {
+                case EMarketplaces.Ozon:
+                    imgSelectedMarketplace.Content = Resources["imageOzon"];
+                    break;
+                case EMarketplaces.Wildberries:
+                    imgSelectedMarketplace.Content = Resources["imageWildberries"];
+                    break;
+                case EMarketplaces.YandexMarket:
+                    imgSelectedMarketplace.Content = Resources["imageYandexMarket"];
+                    break;
+            }
         }
 
         public static DependencyProperty DetailArticulProperty;
