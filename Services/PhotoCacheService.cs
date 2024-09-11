@@ -225,7 +225,7 @@ namespace ClientWPF.Services
                     {
                         // Add new photo
                         PhotoCacheData.Add(photoId, photoLink);
-                        PhotoLoadedEvent?.Invoke(GetBitmapFromByteArray(downloadResult));
+                        PhotoLoadedEvent?.Invoke(downloadResult);
                         return;
                     }
                     else
@@ -234,7 +234,7 @@ namespace ClientWPF.Services
                         return;
                     }
                 }
-                // Different photo links
+                // Different photo links, redownload image
                 else if (savedPhotoLink != photoLink)
                 {
                     File.Delete(PhotoCacheDirectory + photoId + ".jpg");
@@ -243,7 +243,7 @@ namespace ClientWPF.Services
                     {
                         // Change photo link
                         PhotoCacheData[photoId] = photoLink;
-                        PhotoLoadedEvent?.Invoke(GetBitmapFromByteArray(downloadResult));
+                        PhotoLoadedEvent?.Invoke(downloadResult);
                         return;
                     }
                     else
@@ -285,14 +285,27 @@ namespace ClientWPF.Services
         }
 
         // Download photo from link and save it in cache directory. Return null if failed
-        private async Task<byte[]?> DownloadPhoto(string photoId, string photoLink)
+        private async Task<BitmapImage?> DownloadPhoto(string photoId, string photoLink)
         {
             try
             {
+                // Download bytes
                 var imageBytes = await HttpClient.GetByteArrayAsync(photoLink);
-                await File.WriteAllBytesAsync(PhotoCacheDirectory + photoId + ".jpg", imageBytes);
 
-                return imageBytes;
+                // Create bitmap with decode pixel height (resized for UI)
+                var resizedImage = GetBitmapFromByteArray(imageBytes);
+
+                // Crate encoder for save bitmap to cache directory
+                BitmapEncoder encoder = new JpegBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(resizedImage));
+
+                // Save
+                using (var fileStream = new FileStream(PhotoCacheDirectory + photoId + ".jpg", FileMode.Create))
+                {
+                    encoder.Save(fileStream);
+                }
+
+                return resizedImage;
             }
             catch
             {
