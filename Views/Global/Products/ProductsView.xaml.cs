@@ -7,6 +7,7 @@
  */
 
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ClientWPF.Views.Global.Products
 {
@@ -15,6 +16,18 @@ namespace ClientWPF.Views.Global.Products
         public ProductsView()
         {
             InitializeComponent();
+        }
+
+        private void textBoxSearch_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (textBoxSearch.Text == "Поиск")
+                textBoxSearch.Text = "";
+        }
+
+        private void textBoxSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                Keyboard.ClearFocus();
         }
     }
 }

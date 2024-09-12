@@ -11,7 +11,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
 
 namespace ClientWPF.ViewModels.Global.Products
 {
@@ -19,40 +18,6 @@ namespace ClientWPF.ViewModels.Global.Products
     {
         const int MAX_CARDS_IN_PAGE = ProductsModel.MAX_CARDS_IN_PAGE;
         private readonly ProductsModel _model;
-
-        public ProductsViewModel()
-        {
-            _model = new();
-            _model.PropertyChanged += BindModelChanges;
-
-            _model.InGetProductsInfo(1, MAX_CARDS_IN_PAGE);
-        }    
-
-        private void BindModelChanges(object? obj, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName == null)
-                return;
-
-            if (args.PropertyName == nameof(_model.ProductsCount))
-            {
-                ProductsCount = _model.ProductsCount;
-                return;
-            }
-
-            OnPropertyChanged(args.PropertyName);
-        }
-
-        [RelayCommand]
-        private void NextPage()
-        {
-            CurrentPageNumber++;
-        }
-
-        [RelayCommand]
-        private void BackPage()
-        {
-            CurrentPageNumber--;
-        }
 
         public ReadOnlyObservableCollection<ProductCard> ProductCards => _model.Products;
 
@@ -101,10 +66,16 @@ namespace ClientWPF.ViewModels.Global.Products
                 IsBackButtonEnabled = IsEmptyCards ? false : _currentPageNumber != 1;
                 IsNextButtonEnabled = IsEmptyCards ? false : _currentPageNumber != ProductsPagesCount;
 
-                _model.InGetProductsInfo(MAX_CARDS_IN_PAGE * (_currentPageNumber - 1) + 1, MAX_CARDS_IN_PAGE * _currentPageNumber);
+                if (IsSearch)
+                    _model.InSearchProducts(SearchText, MAX_CARDS_IN_PAGE * (_currentPageNumber - 1) + 1, MAX_CARDS_IN_PAGE * _currentPageNumber);
+                else
+                    _model.InGetProductsInfo(MAX_CARDS_IN_PAGE * (_currentPageNumber - 1) + 1, MAX_CARDS_IN_PAGE * _currentPageNumber);
             }
         }
         private int _currentPageNumber = 0;
+
+        [ObservableProperty]
+        private string _searchText = "Поиск";
 
         [ObservableProperty]
         private bool _isEmptyCards = true;
@@ -117,5 +88,71 @@ namespace ClientWPF.ViewModels.Global.Products
 
         [ObservableProperty]
         private bool _canNavigatePage = false;
+
+        [ObservableProperty]
+        private bool _isSearch = false;
+
+        public ProductsViewModel()
+        {
+            _model = new();
+            _model.PropertyChanged += BindModelChanges;
+
+            _model.InGetProductsInfo(1, MAX_CARDS_IN_PAGE);
+        }
+
+        private void BindModelChanges(object? obj, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == null)
+                return;
+
+            if (args.PropertyName == nameof(_model.ProductsCount))
+            {
+                ProductsCount = _model.ProductsCount;
+                return;
+            }
+
+            OnPropertyChanged(args.PropertyName);
+        }
+
+        [RelayCommand]
+        private void NextPage()
+        {
+            CurrentPageNumber++;
+        }
+
+        [RelayCommand]
+        private void BackPage()
+        {
+            CurrentPageNumber--;
+        }
+
+        [RelayCommand]
+        private void SearchEnter()
+        {
+            if (SearchText == "")
+            {
+                SearchText = "Поиск";
+                // Return to home page
+                if (IsSearch)
+                {
+                    IsSearch = false;
+                    _model.InGetProductsInfo(1, MAX_CARDS_IN_PAGE);            
+                }
+            }
+
+            IsSearch = true;
+            // Call search
+            _model.InSearchProducts(SearchText, 1, MAX_CARDS_IN_PAGE);          
+        }
+
+        [RelayCommand]
+        private void ReturnHome()
+        {
+            if (!IsSearch) return;
+          
+            SearchText = "Поиск";
+            IsSearch = false;
+            _model.InGetProductsInfo(1, MAX_CARDS_IN_PAGE);
+        }
     }
 }
