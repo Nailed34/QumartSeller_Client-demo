@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientWPF.Views.Global.Products"
 	  xmlns:products="clr-namespace:ClientWPF.ViewModels.Global.Products"
+	  d:DataContext="{d:DesignInstance Type=products:ProductsViewModel}"
 	  mc:Ignorable="d" 
       d:DesignHeight="850" d:DesignWidth="1200">
 
@@ -40,7 +41,14 @@
 				</Trigger>
 			</Style.Triggers>
 		</Style>
-		
+
+		<Style x:Key="textBoxSearchStyle" TargetType="TextBox" BasedOn="{StaticResource textBoxBaseStyle}">
+			<Style.Triggers>
+				<Trigger Property="Text" Value="Поиск">
+					<Setter Property="Foreground" Value="LightGray"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
 	</Page.Resources>
 	
 	<Border>
@@ -60,7 +68,7 @@
 				</Grid.ColumnDefinitions>
 				
 				<!-- Home button -->
-				<Button Style="{DynamicResource buttonHomeStyle}" Grid.Column="0" Margin="25,5" HorizontalAlignment="Right" Width="50">
+				<Button Style="{DynamicResource buttonHomeStyle}" Grid.Column="0" Margin="25,5" HorizontalAlignment="Right" Width="50" IsEnabled="{Binding IsSearch}" Command="{Binding ReturnHomeCommand}">
 					<Image Source="/UIKit/Resources/HomePageIcon.png" Width="22" Height="22"></Image>
 				</Button>
 				
@@ -78,7 +86,11 @@
 							<ColumnDefinition/>
 						</Grid.ColumnDefinitions>
 						<Image Source="/UIKit/Resources/FindIcon.png" Width="20" Height="20"></Image>
-						<TextBox Style="{DynamicResource textBoxBaseStyle}" Grid.Column="1" CaretBrush="White" TextWrapping="NoWrap" VerticalAlignment="Center" BorderThickness="0" Text="Поиск" Cursor="IBeam"/>
+						<TextBox x:Name="textBoxSearch" Style="{DynamicResource textBoxSearchStyle}" Grid.Column="1" CaretBrush="White" TextWrapping="NoWrap" VerticalAlignment="Center" BorderThickness="0" Cursor="IBeam" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotKeyboardFocus="textBoxSearch_GotKeyboardFocus" KeyUp="textBoxSearch_KeyUp">
+							<TextBox.InputBindings>
+								<KeyBinding Command="{Binding SearchEnterCommand}" Key="Enter" />
+							</TextBox.InputBindings>
+						</TextBox>
 					</Grid>
 				</Border>
 				

@@ -24,6 +24,18 @@ namespace ClientWPF.Models
         // Save context for do actions in right thread
         private readonly TaskScheduler _taskScheduler;
 
+        /// <summary>
+        /// Collection with current products to display
+        /// </summary>
+        public readonly ReadOnlyObservableCollection<ProductCard> Products;
+        private readonly ObservableCollection<ProductCard> _products = new();
+
+        /// <summary>
+        /// Count of products from request
+        /// </summary>
+        [ObservableProperty]
+        private int _productsCount = 0;
+
         public ProductsModel()
         {
             // Save context
@@ -89,15 +101,32 @@ namespace ClientWPF.Models
         }
 
         /// <summary>
-        /// Collection with current products to display
+        /// Do request for search products
         /// </summary>
-        public readonly ReadOnlyObservableCollection<ProductCard> Products;
-        private readonly ObservableCollection<ProductCard> _products = new();
+        public void InSearchProducts(string searchRequest, int firstIndex, int lastIndex)
+        {
+            if (ConnectionService.Connection != null && _connectionService.ConnectionStatus == EConnectionStatus.Connected)
+                ConnectionService.Connection.SendAsync("InSearchProducts", new InSearchProducts() { SearchRequest = searchRequest, FirstIndex = firstIndex, LastIndex= lastIndex });
+        }
 
-        /// <summary>
-        /// Count of products from request
-        /// </summary>
-        [ObservableProperty]
-        private int _productsCount = 0;
+        private void OutSearchProducts(OutSearchProducts response)
+        {
+            var synchTask = new Task(() =>
+            {
+                var products = ProductInfo.DeserializeProductInfo(response.FoundProducts);
+
+                // Update displayed products
+                for (int i = 0; i < products.Count; i++)
+                    _products[i].ChangeSource(products[i]);
+
+                // Collapse empty products
+                for (int i = products.Count; i < MAX_CARDS_IN_PAGE; i++)
+                    _products[i].ChangeSource(null);
+
+                // Setup count
+                ProductsCount = response.FoundProductsCount;
+            });
+            synchTask.RunSynchronously(_taskScheduler);
+        }
     }
 }

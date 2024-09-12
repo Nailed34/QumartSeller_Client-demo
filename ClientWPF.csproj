@@ -27,7 +27,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.8" />
-    <PackageReference Include="QumartSeller_ClientServerConnection" Version="0.1.1-alpha" />
+    <PackageReference Include="QumartSeller_ClientServerConnection" Version="0.1.2-alpha" />
   </ItemGroup>
 
   <ItemGroup>
